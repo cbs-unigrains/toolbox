@@ -1,0 +1,130 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="relative bg-gray-800 ">
+  <div class="absolute inset-0  z-30 pointer-events-none" aria-hidden="true"></div>
+  <div class="relative z-20">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-5 sm:px-6 sm:py-4 lg:px-8 md:justify-start md:space-x-10">
+      <div>
+        <a href="#" class="flex">
+          <span class="sr-only">Workflow</span>
+          <img
+            class="h-8 w-auto sm:h-10"
+            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
+            alt=""
+          />
+        </a>
+      </div>
+
+      <div class="hidden md:flex-1 md:flex md:items-center md:justify-between">
+        <nav class="flex space-x-4">
+          <.flyout_menu label="Chrono" active={@active_tab == "Chrono"}>
+            <.flyout_menu_element
+              patch={Routes.unit_index_path(@conn, :index)}
+              icon={:currency_euro}
+              title="Unité"
+              subtitle="Permet de gérer les unités utilisées par les mesures."
+              link_label="Gérer les unités"
+            />
+            <.flyout_menu_element
+              patch={Routes.serie_index_path(@conn, :index)}
+              icon={:view_grid_add}
+              title="Série"
+              subtitle="Permet de gérer les secteur, rubrique et détail de classification des séries."
+              link_label="Gérer la classification des séries"
+            />
+            <.flyout_menu_element
+              patch={Routes.serie_index_path(@conn, :index)}
+              icon={:database}
+              title="Données"
+              subtitle="Liste des différentes données d'une série."
+              link_label="Gérer les données chiffrées"
+            />
+            <:footer>
+              <a
+                href="#"
+                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
+              >
+                <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
+                <span class="ml-3">Documentation</span>
+              </a>
+            </:footer>
+          </.flyout_menu>
+
+          <.flyout_menu label="eFront" active={@active_tab == "eFront"}>
+            <.flyout_menu_element
+              patch={Routes.unit_index_path(@conn, :index)}
+              icon={:inbox_in}
+              title="ICNEs"
+              subtitle="Permet de sélectionner les ICNEs à envoyer vers la comptabilité."
+              link_label="Envoyer les ICNEs"
+            />
+            <.flyout_menu_element
+              patch={Routes.unit_index_path(@conn, :index)}
+              icon={:inbox_in}
+              title="Cash"
+              subtitle="Permet de sélectionner les écritures CASH à envoyer vers la comptabilité."
+              link_label="Envoyer les écritures Cash"
+            />
+            <:footer>
+              <a
+                href="#"
+                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
+              >
+                <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
+                <span class="ml-3">Documentation</span>
+              </a>
+            </:footer>
+          </.flyout_menu>
+
+          <a
+            href="#"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+          >
+            Docuware
+          </a>
+        </nav>
+        <div class="flex items-center md:ml-12">
+          <div class="relative">
+            <.dropdown>
+              <:trigger>
+                <span class="sr-only">Open user menu</span>
+                <img
+                  class="h-8 w-8 rounded-full"
+                  src={@current_user.image}
+                  alt={@current_user.display_name}
+                />
+              </:trigger>
+              <!-- Active: "bg-gray-100", Not Active: "" -->
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-0"
+              >
+                Your Profile
+              </a>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-1"
+              >
+                Settings
+              </a>
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-gray-700"
+                role="menuitem"
+                tabindex="-1"
+                id="user-menu-item-2"
+              >
+                Sign out
+              </a>
+            </.dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<div>
+  <div class="mb-12 text-center mx-4 sm:text-left">
+    <h3 class="text-lg leading-6 font-medium text-gray-900 my-6" id="modal-title">
+      Créé une Nouvelle Série
+    </h3>
+
+    <div class="mt-2">
+      <.form
+        let={f}
+        for={@changeset}
+        id="serie-form"
+        class="h-full flex flex-col space-y-4"
+        phx-target={@myself}
+        phx-change="validate"
+        phx-submit="save"
+      >
+        <div class="space-y-1">
+          <.form_label form={f} field={:code}>Code</.form_label>
+          <.text_input
+            form={f}
+            field={:code}
+            placeholder="Code de la Série"
+            autofill="off"
+            autocomplete="off"
+          />
+          <.error
+            form={f}
+            field={:code}
+            input_name={Phoenix.HTML.Form.input_name(f, :code)}
+            errors={@changeset.errors}
+          />
+        </div>
+
+        <div class="space-y-1">
+          <.form_label form={f} field={:secteur}>Secteur</.form_label>
+          <.text_input
+            form={f}
+            field={:secteur}
+            placeholder="Secteur de la Série"
+            autofill="off"
+            autocomplete="off"
+          />
+          <.error
+            form={f}
+            field={:secteur}
+            input_name={Phoenix.HTML.Form.input_name(f, :secteur)}
+            errors={@changeset.errors}
+          />
+        </div>
+        <div class="space-y-1">
+          <.form_label form={f} field={:rubrique}>Rubrique</.form_label>
+          <.text_input
+            form={f}
+            field={:rubrique}
+            placeholder="Rubrique de la Série"
+            autofill="off"
+            autocomplete="off"
+          />
+          <.error
+            form={f}
+            field={:rubrique}
+            input_name={Phoenix.HTML.Form.input_name(f, :rubrique)}
+            errors={@changeset.errors}
+          />
+        </div>
+        <div class="space-y-1">
+          <.form_label form={f} field={:label}>Libellé</.form_label>
+          <.text_input
+            form={f}
+            field={:label}
+            placeholder="Libellé de la Série"
+            autofill="off"
+            autocomplete="off"
+          />
+          <.error
+            form={f}
+            field={:label}
+            input_name={Phoenix.HTML.Form.input_name(f, :label)}
+            errors={@changeset.errors}
+          />
+        </div>
+        <div class="space-y-1">
+          <.form_label form={f} field={:periodicity}>Périodicité</.form_label>
+          <.select
+            form={f}
+            field={:periodicity}
+            options={
+              [
+                Quotidienne: "quotidienne",
+                Hebdomadaire: "hebdomadaire",
+                Mensuelle: "mensuelle",
+                Trimestrielle: "trimestrielle",
+                Annuelle: "annuelle"
+              ]
+            }
+            )
+          />
+          <.error
+            form={f}
+            field={:periodicity}
+            input_name={Phoenix.HTML.Form.input_name(f, :periodicity)}
+            errors={@changeset.errors}
+          />
+        </div>
+        <div class="space-y-1">
+          <.form_label form={f} field={:type}>Type</.form_label>
+          <.select
+            form={f}
+            field={:type}
+            options={
+              [Indice: "indice", Prix: "prix", Taux: "taux", Valeur: "valeur", Volume: "volume"]
+            }
+            )
+          />
+          <.error
+            form={f}
+            field={:type}
+            input_name={Phoenix.HTML.Form.input_name(f, :type)}
+            errors={@changeset.errors}
+          />
+        </div>
+        <div class="space-y-1">
+          <.form_label form={f} field={:comment}>Commentaire</.form_label>
+          <.text_input
+            form={f}
+            field={:comment}
+            placeholder="Commentaire sur la Série"
+            autofill="off"
+            autocomplete="off"
+          />
+          <.error
+            form={f}
+            field={:comment}
+            input_name={Phoenix.HTML.Form.input_name(f, :comment)}
+            errors={@changeset.errors}
+          />
+        </div>
+      </.form>
+    </div>
+  </div>
+  <div class="z-50 bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+    <%= submit("Save",
+      phx_disable_with: "Saving...",
+      form: "unit-form",
+      class:
+        "w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+    ) %>
+
+    <.link
+      patch={@return_to}
+      id="close"
+      class=" mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+      phx-click={hide_modal()}
+    >
+      Cancel
+    </.link>
+  </div>
+</div>

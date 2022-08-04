@@ -1,0 +1,57 @@
+<h1>Show Serie</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.serie_show_path(@socket, :show, @serie)}>
+    <.live_component
+      module={ToolboxWeb.SerieLive.FormComponent}
+      id={@serie.id}
+      title={@page_title}
+      action={@live_action}
+      serie={@serie}
+      return_to={Routes.serie_show_path(@socket, :show, @serie)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+  <li>
+    <strong>Secteur:</strong>
+    <%= @serie.secteur %>
+  </li>
+
+  <li>
+    <strong>Rubrique:</strong>
+    <%= @serie.rubrique %>
+  </li>
+
+  <li>
+    <strong>Code:</strong>
+    <%= @serie.code %>
+  </li>
+
+  <li>
+    <strong>Label:</strong>
+    <%= @serie.label %>
+  </li>
+
+  <li>
+    <strong>Periodicity:</strong>
+    <%= @serie.periodicity %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @serie.comment %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @serie.type %>
+  </li>
+</ul>
+
+<span>
+  <%= live_patch("Edit", to: Routes.serie_show_path(@socket, :edit, @serie), class: "button") %>
+</span>
+|
+<span><%= live_redirect("Back", to: Routes.serie_index_path(@socket, :index)) %></span>
