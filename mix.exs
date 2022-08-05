@@ -38,6 +38,7 @@ defmodule Toolbox.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
       {:tds, "~> 2.0"},
+      {:excoding, "~> 0.1"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.17.5"},
@@ -52,6 +53,8 @@ defmodule Toolbox.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
+      {:ex_cldr_numbers, "~> 2.0"},
+      {:ex_cldr_dates_times, "~> 2.0"},
       {:req, "~> 0.3.0"},
       {:plug_cowboy, "~> 2.5"}
     ]

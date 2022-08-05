@@ -45,7 +45,11 @@ defmodule Toolbox.Accounts.User do
         changeset
 
       nickname ->
-        put_change(changeset, :image, "https://eu.ui-avatars.com/api/?background=0D8ABC&bold=true&color=fff&name=" <> nickname)
+        put_change(
+          changeset,
+          :image,
+          "https://eu.ui-avatars.com/api/?background=0D8ABC&bold=true&color=fff&name=" <> nickname
+        )
     end
   end
 

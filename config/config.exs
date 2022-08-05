@@ -10,6 +10,8 @@ import Config
 config :toolbox,
   ecto_repos: [Toolbox.Repo]
 
+config :tds, :text_encoder, Excoding
+
 config :ueberauth, Ueberauth,
   providers: [
     microsoft: {Ueberauth.Strategy.Microsoft, [prompt: "select_account"]}

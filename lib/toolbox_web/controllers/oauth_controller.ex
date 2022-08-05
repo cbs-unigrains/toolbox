@@ -26,7 +26,13 @@ defmodule Toolbox.OauthController do
         "provider" => "microsoft"
       }) do
     IO.inspect(conn)
-    user_params = %{email: user_info.email, password: random_password(), display_name: user_info.name, image: user_info.image}
+
+    user_params = %{
+      email: user_info.email,
+      password: random_password(),
+      display_name: user_info.name,
+      image: user_info.image
+    }
 
     case Accounts.fetch_or_create_user(user_params) do
       {:ok, user} ->

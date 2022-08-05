@@ -1,0 +1,137 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-xl font-semibold text-gray-900">Cash</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Permet de sélectionner les écritures CASH à envoyer vers la comptabilité.
+      </p>
+    </div>
+    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+      <button class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+        Transmettre à la compta
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Nombre de ligne</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900"><%= @series.num_rows %></dd>
+      </div>
+
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Cumul Cash Euro</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@series.rows, "EUR"),
+            locale: :fr,
+            currency: "EUR"
+          ) %>
+        </dd>
+      </div>
+
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Cumul Cash Dollars</dt>
+        <dd class="mt-1 text-3xl font-semibold text-gray-900">
+          <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@series.rows, "USD"),
+            locale: :fr,
+            currency: "USD"
+          ) %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="mt-8 flex flex-col">
+    <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300 font-mono">
+          <thead>
+            <tr>
+              <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8">
+                <input
+                  type="checkbox"
+                  class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+                />
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+              >
+                Fund
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Account
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Instrument
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Date
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+              >
+                Accounting
+              </th>
+              <th
+                scope="col"
+                class="whitespace-nowrap px-2 py-3.5 text-right text-sm font-semibold text-gray-900"
+              >
+                Amount
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <%= for {idx, row} <- @series.rows_with_index do %>
+              <tr id={"glentry-#{row.glentry_id}"} class={stripped_row_class(idx)}>
+                <td class="relative w-12 px-6 sm:w-16 sm:px-8">
+                  <!-- Selected row marker, only show when row is selected. -->
+                  <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
+                  <input
+                    type="checkbox"
+                    class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+                  />
+                </td>
+                <td class="whitespace-nowrap py-2 pl-4 pr-3 text-sm text-gray-500 sm:pl-6">
+                  <%= row.fund %>
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-500">
+                  <%= row.account %>
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-500">
+                  <%= row.instrument %>
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-500">
+                  <%= Toolbox.Cldr.Date.to_string!(Date.from_iso8601!(row.date),
+                    format: :short,
+                    locale: "fr"
+                  ) %>
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-500 text-right">
+                  <%= row.accounting %>
+                </td>
+                <td class="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900 text-right">
+                  <%= Toolbox.Cldr.Number.to_string!(row.amount,
+                    locale: :fr,
+                    currency: row.currency
+                  ) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -51,14 +51,14 @@
 
           <.flyout_menu label="eFront" active={@active_tab == "eFront"}>
             <.flyout_menu_element
-              patch={Routes.unit_index_path(@conn, :index)}
+              patch={Routes.efront_accruals_path(@conn, :index)}
               icon={:inbox_in}
               title="ICNEs"
               subtitle="Permet de sélectionner les ICNEs à envoyer vers la comptabilité."
               link_label="Envoyer les ICNEs"
             />
             <.flyout_menu_element
-              patch={Routes.unit_index_path(@conn, :index)}
+              patch={Routes.efront_cash_path(@conn, :index)}
               icon={:inbox_in}
               title="Cash"
               subtitle="Permet de sélectionner les écritures CASH à envoyer vers la comptabilité."
@@ -75,12 +75,24 @@
             </:footer>
           </.flyout_menu>
 
-          <a
-            href="#"
-            class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-          >
-            Docuware
-          </a>
+          <.flyout_menu label="Docuware" active={@active_tab == "docuware"}>
+            <.flyout_menu_element
+              patch={Routes.docuware_rss_path(@conn, :index)}
+              icon={:rss}
+              title="RSS"
+              subtitle="Liste des flux RSS docuware permettant de suivre les derniers documents stockés."
+              link_label="Liste les flux RSS"
+            />
+            <:footer>
+              <a
+                href="#"
+                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
+              >
+                <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
+                <span class="ml-3">Documentation</span>
+              </a>
+            </:footer>
+          </.flyout_menu>
         </nav>
         <div class="flex items-center md:ml-12">
           <div class="relative">

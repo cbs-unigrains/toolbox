@@ -16,6 +16,9 @@ defmodule ToolboxWeb.Nav do
         {ToolboxWeb.SerieLive.Index, _} ->
           "Chrono"
 
+        {ToolboxWeb.EfrontLive.Index, _} ->
+          "eFront"
+
         {_, _} ->
           nil
       end

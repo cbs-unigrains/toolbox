@@ -37,6 +37,13 @@ defmodule ToolboxWeb.Router do
       live "/series/:id/edit", SerieLive.Index, :edit
       live "/series/:id", SerieLive.Show, :show
       live "/series/:id/show/edit", SerieLive.Show, :edit
+
+      # eFront
+      live "/eFront/accruals", EfrontLive.Accruals, :index
+      live "/eFront/cash", EfrontLive.Cash, :index
+
+      # docuware
+      live "/docuware/rss", DocuwareLive.Rss, :index
     end
   end
 
