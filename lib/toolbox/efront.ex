@@ -17,16 +17,16 @@ defmodule Toolbox.Efront do
   """
 
   @accruals_query """
-  SELECT R4.FUND AS Fund
-    , R5.NAME AS Account
-    , R1.SHORTNAME AS InstrumentCode
-    , A.REFDATE AS ValueDate
-    , R6.ACCOUNTNO AS AccountingNumber
-    , R1.CURRENCY1 AS Currency
-    , A.AMOUNT AS Amount
-    , A.SHORTDESCR AS Label
-    , R2.IQID AS TransactionId
-    , A.IQID AS GLentryId
+  SELECT R4.FUND AS fund
+    , R5.NAME AS account
+    , R1.SHORTNAME AS instrument_code
+    , A.REFDATE AS value_date
+    , R6.ACCOUNTNO AS accounting_number
+    , R1.CURRENCY1 AS currency
+    , A.AMOUNT AS amount
+    , A.SHORTDESCR AS label
+    , R2.IQID AS transaction_id
+    , A.IQID AS gLentry_id
   FROM [efront].[dbo].[GLENTRY] A
     LEFT JOIN [efront].[dbo].[VCINVESTMENTINS] R1 ON R1.IQID=A.KEYID4
     LEFT JOIN [efront].[dbo].[VCINVESTMENT] R2 ON R2.IQID=R1.INVESTMENT
