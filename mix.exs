@@ -56,6 +56,7 @@ defmodule Toolbox.MixProject do
       {:ex_cldr_numbers, "~> 2.0"},
       {:ex_cldr_dates_times, "~> 2.0"},
       {:req, "~> 0.3.0"},
+      {:nimble_csv, "~> 1.1"},
       {:plug_cowboy, "~> 2.5"}
     ]
   end

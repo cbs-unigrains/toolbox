@@ -58,6 +58,8 @@ defmodule ToolboxWeb.EfrontLive.Cash do
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
     IO.inspect(glentries)
 
+    Efront.export_cash(glentries)
+
     {:noreply, socket |> assign(:toggle_ids, [])}
   end
 
