@@ -72,9 +72,9 @@ defmodule ToolboxWeb.EfrontLive.Cash do
     Efront.list_cash()
   end
 
-  def cumul_cash(flows, currency) do
+  def cumul_cash(flows, currency, selected) do
     flows
-    |> Enum.filter(fn f -> f.amount > 0 && f.currency == currency end)
+    |> Enum.filter(fn f -> f.amount > 0 && f.currency == currency && f.glentry_id in selected end)
     |> Enum.reduce(0, fn f, acc -> f.amount + acc end)
   end
 

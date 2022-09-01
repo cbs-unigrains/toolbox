@@ -27,9 +27,9 @@
 
         <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
           <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-            <%= @num_rows %>
+            <%= Enum.count(@toggle_ids) %>
             <span class="ml-2 text-sm font-medium text-gray-500">
-              <%= Enum.count(@toggle_ids) %> sélectionnée
+               / <%= @num_rows %> 
             </span>
           </div>
         </dd>
@@ -40,7 +40,7 @@
 
         <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
           <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-            <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "EUR"),
+            <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "EUR", @toggle_ids),
               locale: :fr,
               currency: "EUR"
             ) %>
@@ -52,7 +52,7 @@
         <dt class="text-base font-normal text-gray-900">Cumul Cash Dollars</dt>
         <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
           <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-            <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "USD"),
+            <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "USD", @toggle_ids),
               locale: :fr,
               currency: "USD"
             ) %>
