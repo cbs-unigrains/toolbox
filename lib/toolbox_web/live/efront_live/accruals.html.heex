@@ -1,23 +1,4 @@
 <div class="px-4 sm:px-6 lg:px-8">
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-xl font-semibold text-gray-900">ICNEs</h1>
-      <p class="mt-2 text-sm text-gray-700">
-        Permet de sélectionner les ICNEs à envoyer vers la comptabilité.
-      </p>
-    </div>
-    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-      <button
-        class={
-          "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto  disabled:opacity-75 #{if Enum.count(@toggle_ids) > 0, do: "hover:bg-indigo-700", else: "cursor-not-allowed"}"
-        }
-        disabled={Enum.count(@toggle_ids) == 0}
-      >
-        Transmettre à la compta
-      </button>
-    </div>
-  </div>
-
   <div>
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
@@ -25,11 +6,21 @@
 
         <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
           <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
-            <%= @num_rows %>
+            <%= Enum.count(@toggle_ids) %>
             <span class="ml-2 text-sm font-medium text-gray-500">
-              <%= Enum.count(@toggle_ids) %> sélectionnée
+              / <%= @num_rows %>
             </span>
           </div>
+
+          <button
+            class={
+              "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto disabled:opacity-75 #{if Enum.count(@toggle_ids) > 0, do: "hover:bg-indigo-700", else: "cursor-not-allowed"}"
+            }
+            disabled={Enum.count(@toggle_ids) == 0}
+          >
+            <.icon name={:upload} />
+            <span class="ml-2">compta</span>
+          </button>
         </dd>
       </div>
 

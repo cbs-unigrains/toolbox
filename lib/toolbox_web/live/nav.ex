@@ -11,18 +11,29 @@ defmodule ToolboxWeb.Nav do
     active_tab =
       case {socket.view, socket.assigns.live_action} do
         {ToolboxWeb.UnitLive.Index, _} ->
-          "Chrono"
+          {"Chrono", nil}
 
         {ToolboxWeb.SerieLive.Index, _} ->
-          "Chrono"
+          {"Chrono",
+           "Permet de gérer les secteur, rubrique et détail de classification des séries."}
 
-        {ToolboxWeb.EfrontLive.Index, _} ->
-          "eFront"
+        {ToolboxWeb.SecteurLive.Index, _} ->
+          {"Chrono", "Permet de créer, modifier les secteurs"}
+
+        {ToolboxWeb.EfrontLive.Cash, _} ->
+          {"Flux Cash",
+           "Permet de sélectionner les écritures CASH à envoyer vers la comptabilité."}
+
+        {ToolboxWeb.EfrontLive.Accruals, _} ->
+          {"ICNEs", "Permet de sélectionner les ICNEs à envoyer vers la comptabilité."}
 
         {_, _} ->
-          nil
+          {nil, nil}
       end
 
-    {:cont, assign(socket, active_tab: active_tab)}
+    {:cont,
+     socket
+     |> assign(active_tab: elem(active_tab, 0))
+     |> assign(active_tab_desc: elem(active_tab, 1))}
   end
 end

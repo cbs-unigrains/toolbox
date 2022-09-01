@@ -10,12 +10,12 @@ defmodule Toolbox.Efront do
 
   @doc """
   Returns the accruals.
-
+  
   ## Examples
-
+  
       iex> list_accruals()
       [%Unit{}, ...]
-
+  
   """
 
   @accruals_query """
@@ -50,12 +50,12 @@ defmodule Toolbox.Efront do
 
   @doc """
   Returns the cash flows.
-
+  
   ## Examples
-
+  
       iex> list_accruals()
       [%Unit{}, ...]
-
+  
   """
   @cash_query """
   SELECT R4.FUND AS fund
@@ -114,7 +114,7 @@ defmodule Toolbox.Efront do
 
   @doc """
   Export the gl entries to a file
-
+  
   1058E8D0AEFD4AF5B147F2A6DA5B05B9;UNIG;001;29/06/2022;EUR;706010;       ;credit;6966.6400;29/06/2022 - Frais dossier reçus Action -  6966,6400 EUR - PAR-A-75352 01-UNG - Participation : SAGARD 4A;CI75352;I7535201;ZZZ-ZZZ-ZZZ
   1058E8D0AEFD4AF5B147F2A6DA5B05B9;UNIG;001;29/06/2022;EUR;472000;CI75352;debit ;6966.6400;29/06/2022 - Frais dossier reçus Action -  6966,6400 EUR - PAR-A-75352 01-UNG - Participation : SAGARD 4A;CI75352;I7535201;
   """
@@ -198,7 +198,7 @@ defmodule Toolbox.Efront do
           r.analytic
         else
           ""
-        end,
+        end
       ]
     end)
     |> MyParser.dump_to_stream()

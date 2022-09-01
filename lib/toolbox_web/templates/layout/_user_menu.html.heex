@@ -18,25 +18,25 @@
         <nav class="flex space-x-4">
           <.flyout_menu label="Chrono" active={@active_tab == "Chrono"}>
             <.flyout_menu_element
-              patch={Routes.unit_index_path(@conn, :index)}
-              icon={:currency_euro}
-              title="Unité"
-              subtitle="Permet de gérer les unités utilisées par les mesures."
-              link_label="Gérer les unités"
+              patch={Routes.secteur_index_path(@conn, :index)}
+              icon={:database}
+              title="Données"
+              subtitle="Liste des différentes données d'une série."
+              link_label="Gérer les données chiffrées"
             />
             <.flyout_menu_element
-              patch={Routes.serie_index_path(@conn, :index)}
+              patch={Routes.secteur_index_path(@conn, :index)}
               icon={:view_grid_add}
               title="Série"
               subtitle="Permet de gérer les secteur, rubrique et détail de classification des séries."
               link_label="Gérer la classification des séries"
             />
             <.flyout_menu_element
-              patch={Routes.serie_index_path(@conn, :index)}
-              icon={:database}
-              title="Données"
-              subtitle="Liste des différentes données d'une série."
-              link_label="Gérer les données chiffrées"
+              patch={Routes.unit_index_path(@conn, :index)}
+              icon={:currency_euro}
+              title="Unité"
+              subtitle="Permet de gérer les unités utilisées par les mesures."
+              link_label="Gérer les unités"
             />
             <:footer>
               <a

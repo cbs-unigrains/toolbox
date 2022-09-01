@@ -1,0 +1,26 @@
+<h1>Show Rubrique</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.rubrique_show_path(@socket, :show, @rubrique)}>
+    <.live_component
+      module={ToolboxWeb.RubriqueLive.FormComponent}
+      id={@rubrique.id}
+      title={@page_title}
+      action={@live_action}
+      rubrique={@rubrique}
+      return_to={Routes.rubrique_show_path(@socket, :show, @rubrique)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @rubrique.name %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.rubrique_show_path(@socket, :edit, @rubrique), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.rubrique_index_path(@socket, :index) %></span>

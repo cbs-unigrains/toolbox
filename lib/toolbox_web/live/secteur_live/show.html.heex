@@ -1,0 +1,25 @@
+<h1>Show Secteur</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.secteur_show_path(@socket, :show, @secteur)}>
+    <.live_component
+      module={ToolboxWeb.SecteurLive.FormComponent}
+      id={@secteur.id}
+      title={@page_title}
+      action={@live_action}
+      secteur={@secteur}
+      return_to={Routes.secteur_show_path(@socket, :show, @secteur)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @secteur.name %>
+  </li>
+</ul>
+
+<span>
+  <%= live_patch("Edit", to: Routes.secteur_show_path(@socket, :edit, @secteur), class: "button") %>
+</span> 

@@ -38,4 +38,32 @@ defmodule Toolbox.ChronoFixtures do
 
     serie
   end
+
+  @doc """
+  Generate a secteur.
+  """
+  def secteur_fixture(attrs \\ %{}) do
+    {:ok, secteur} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> Toolbox.Chrono.create_secteur()
+
+    secteur
+  end
+
+  @doc """
+  Generate a rubrique.
+  """
+  def rubrique_fixture(attrs \\ %{}) do
+    {:ok, rubrique} =
+      attrs
+      |> Enum.into(%{
+        name: "some name"
+      })
+      |> Toolbox.Chrono.create_rubrique()
+
+    rubrique
+  end
 end

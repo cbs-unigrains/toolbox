@@ -149,4 +149,112 @@ defmodule Toolbox.ChronoTest do
       assert %Ecto.Changeset{} = Chrono.change_serie(serie)
     end
   end
+
+  describe "secteurs" do
+    alias Toolbox.Chrono.Secteur
+
+    import Toolbox.ChronoFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_secteurs/0 returns all secteurs" do
+      secteur = secteur_fixture()
+      assert Chrono.list_secteurs() == [secteur]
+    end
+
+    test "get_secteur!/1 returns the secteur with given id" do
+      secteur = secteur_fixture()
+      assert Chrono.get_secteur!(secteur.id) == secteur
+    end
+
+    test "create_secteur/1 with valid data creates a secteur" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Secteur{} = secteur} = Chrono.create_secteur(valid_attrs)
+      assert secteur.name == "some name"
+    end
+
+    test "create_secteur/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Chrono.create_secteur(@invalid_attrs)
+    end
+
+    test "update_secteur/2 with valid data updates the secteur" do
+      secteur = secteur_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Secteur{} = secteur} = Chrono.update_secteur(secteur, update_attrs)
+      assert secteur.name == "some updated name"
+    end
+
+    test "update_secteur/2 with invalid data returns error changeset" do
+      secteur = secteur_fixture()
+      assert {:error, %Ecto.Changeset{}} = Chrono.update_secteur(secteur, @invalid_attrs)
+      assert secteur == Chrono.get_secteur!(secteur.id)
+    end
+
+    test "delete_secteur/1 deletes the secteur" do
+      secteur = secteur_fixture()
+      assert {:ok, %Secteur{}} = Chrono.delete_secteur(secteur)
+      assert_raise Ecto.NoResultsError, fn -> Chrono.get_secteur!(secteur.id) end
+    end
+
+    test "change_secteur/1 returns a secteur changeset" do
+      secteur = secteur_fixture()
+      assert %Ecto.Changeset{} = Chrono.change_secteur(secteur)
+    end
+  end
+
+  describe "rubriques" do
+    alias Toolbox.Chrono.Rubrique
+
+    import Toolbox.ChronoFixtures
+
+    @invalid_attrs %{name: nil}
+
+    test "list_rubriques/0 returns all rubriques" do
+      rubrique = rubrique_fixture()
+      assert Chrono.list_rubriques() == [rubrique]
+    end
+
+    test "get_rubrique!/1 returns the rubrique with given id" do
+      rubrique = rubrique_fixture()
+      assert Chrono.get_rubrique!(rubrique.id) == rubrique
+    end
+
+    test "create_rubrique/1 with valid data creates a rubrique" do
+      valid_attrs = %{name: "some name"}
+
+      assert {:ok, %Rubrique{} = rubrique} = Chrono.create_rubrique(valid_attrs)
+      assert rubrique.name == "some name"
+    end
+
+    test "create_rubrique/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Chrono.create_rubrique(@invalid_attrs)
+    end
+
+    test "update_rubrique/2 with valid data updates the rubrique" do
+      rubrique = rubrique_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %Rubrique{} = rubrique} = Chrono.update_rubrique(rubrique, update_attrs)
+      assert rubrique.name == "some updated name"
+    end
+
+    test "update_rubrique/2 with invalid data returns error changeset" do
+      rubrique = rubrique_fixture()
+      assert {:error, %Ecto.Changeset{}} = Chrono.update_rubrique(rubrique, @invalid_attrs)
+      assert rubrique == Chrono.get_rubrique!(rubrique.id)
+    end
+
+    test "delete_rubrique/1 deletes the rubrique" do
+      rubrique = rubrique_fixture()
+      assert {:ok, %Rubrique{}} = Chrono.delete_rubrique(rubrique)
+      assert_raise Ecto.NoResultsError, fn -> Chrono.get_rubrique!(rubrique.id) end
+    end
+
+    test "change_rubrique/1 returns a rubrique changeset" do
+      rubrique = rubrique_fixture()
+      assert %Ecto.Changeset{} = Chrono.change_rubrique(rubrique)
+    end
+  end
 end

@@ -1,4 +1,4 @@
-defmodule ToolboxWeb.SerieLive.Index do
+defmodule ToolboxWeb.SerieLive.Series do
   use ToolboxWeb, :live_view
 
   alias Toolbox.Chrono
