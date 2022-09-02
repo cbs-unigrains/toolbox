@@ -210,7 +210,7 @@ defmodule Toolbox.Chrono do
 
   """
   def list_secteurs do
-    Repo.all(Secteur)
+    Repo.all(Secteur) |> Repo.preload(:rubriques)
   end
 
   @doc """
@@ -305,8 +305,9 @@ defmodule Toolbox.Chrono do
       [%Rubrique{}, ...]
 
   """
-  def list_rubriques do
-    Repo.all(Rubrique)
+  def list_rubriques(secteur_id) do
+    query = from r in Rubrique, where: r.secteur_id == ^secteur_id
+    Repo.all(query)
   end
 
   @doc """

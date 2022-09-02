@@ -10,16 +10,16 @@ defmodule Toolbox.Efront do
 
   @doc """
   Returns the accruals.
-  
+
   ## Examples
-  
+
       iex> list_accruals()
       [%Unit{}, ...]
-  
+
   """
 
   @accruals_query """
-  SELECT R4.FUND AS fund
+  SELECT R4.ABBREVIATION AS fund
     , R5.NAME AS account
     , R1.SHORTNAME AS instrument_code
     , A.REFDATE AS value_date
@@ -28,7 +28,7 @@ defmodule Toolbox.Efront do
     , A.AMOUNT AS amount
     , A.SHORTDESCR AS label
     , R2.IQID AS transaction_id
-    , A.IQID AS gLentry_id
+    , A.IQID AS glentry_id
   FROM [efront].[dbo].[GLENTRY] A
     LEFT JOIN [efront].[dbo].[VCINVESTMENTINS] R1 ON R1.IQID=A.KEYID4
     LEFT JOIN [efront].[dbo].[VCINVESTMENT] R2 ON R2.IQID=R1.INVESTMENT
@@ -45,17 +45,42 @@ defmodule Toolbox.Efront do
   order by  A.REFDATE, R5.NAME, R4.FUND, R1.SHORTNAME,R6.ACCOUNTNO, R2.IQID
   """
   def list_accruals do
-    Repo.query(@accruals_query)
+    {:ok, %{columns: columns, rows: rows, num_rows: num_rows}} = Repo.query(@accruals_query)
+
+    columns_atomed = for col <- columns, do: String.to_atom(col)
+    lines = for row <- rows, do: Map.new(Enum.zip(columns_atomed, row))
+
+    first_transaction_id = List.first(lines).transaction_id
+
+    lines_with_index =
+      lines
+      |> Enum.map_reduce({first_transaction_id, 0}, fn x, acc ->
+        idx =
+          if x.transaction_id == elem(acc, 0) do
+            elem(acc, 1)
+          else
+            elem(acc, 1) + 1
+          end
+
+        {{idx, x}, {x.transaction_id, idx}}
+      end)
+      |> elem(0)
+
+    %{
+      num_rows: num_rows,
+      rows: lines,
+      rows_with_index: lines_with_index
+    }
   end
 
   @doc """
   Returns the cash flows.
-  
+
   ## Examples
-  
+
       iex> list_accruals()
       [%Unit{}, ...]
-  
+
   """
   @cash_query """
   SELECT R4.FUND AS fund
@@ -114,20 +139,20 @@ defmodule Toolbox.Efront do
 
   @doc """
   Export the gl entries to a file
-  
+
   1058E8D0AEFD4AF5B147F2A6DA5B05B9;UNIG;001;29/06/2022;EUR;706010;       ;credit;6966.6400;29/06/2022 - Frais dossier reçus Action -  6966,6400 EUR - PAR-A-75352 01-UNG - Participation : SAGARD 4A;CI75352;I7535201;ZZZ-ZZZ-ZZZ
   1058E8D0AEFD4AF5B147F2A6DA5B05B9;UNIG;001;29/06/2022;EUR;472000;CI75352;debit ;6966.6400;29/06/2022 - Frais dossier reçus Action -  6966,6400 EUR - PAR-A-75352 01-UNG - Participation : SAGARD 4A;CI75352;I7535201;
   """
   @accounting_number_aux ~w(
     165100 168100 168700 168880 250000 261100 261800 266000 267400 267700
     267840 267890 271100 272100 273100 273200 273300 274100 274200 274600
-    274900 275100 276821 276832 276833 276840 277100 296000 296100 296740
-    296784 297210 297310 297320 297330 297420 297821 297832 401100 409100
-    411100 411101 411102 411103 411110 416000 419100 451000 451800 455100
-    455800 458100 464000 467000 467100 467130 467200 472000 472100 475000
-    503000 504000 506000 507000 508200 508800 511100 590300 590400 801100
-    801800 802100 802800 803000 804000 804100 809100 809200 809300 809400
-    809410
+    274900 275100 276821 276832 276833 276834 276840 277100 296000 296100
+    296740 296784 297210 297310 297320 297330 297420 297821 297832 401100
+    409100 411100 411101 411102 411103 411110 416000 419100 451000 451800
+    455100 455800 458100 464000 467000 467100 467130 467200 472000 472100
+    475000 503000 504000 506000 507000 508200 508800 511100 590300 590400
+    801100 801800 802100 802800 803000 804000 804100 809100 809200 809300
+    809400 809410
   )
 
   @accounting_number_analy ~w(
@@ -171,7 +196,7 @@ defmodule Toolbox.Efront do
         where: e.glentry in ^entries,
         order_by: [e.transaction_id, e.sens]
 
-    file = File.stream!(Path.join(@file_path, "test.csv"))
+    file = File.stream!(Path.join(@file_path, "cash.csv"))
     rows = Repo.all(query)
 
     rows
@@ -186,7 +211,46 @@ defmodule Toolbox.Efront do
         if r.accountnumber in @accounting_number_aux do
           r.code_comptable_ins
         else
-          IO.inspect(@accounting_number_aux)
+          ""
+        end,
+        r.sens,
+        r.amount |> :erlang.float_to_binary(decimals: 2),
+        r.label,
+        r.el3,
+        r.el4,
+        if r.accountnumber in @accounting_number_aux do
+          r.analytic
+        else
+          ""
+        end
+      ]
+    end)
+    |> MyParser.dump_to_stream()
+    |> Stream.into(file)
+    |> Stream.run()
+  end
+
+  def export_accruals(entries) do
+    query =
+      from e in Toolbox.Efront.ExportAccruals,
+        where: e.glentry in ^entries,
+        order_by: [e.transaction_id, e.sens]
+
+    file = File.stream!(Path.join(@file_path, "accruals.csv"))
+    rows = Repo.all(query)
+
+    rows
+    |> Enum.map(fn r ->
+      [
+        r.transaction_id,
+        r.code_coda,
+        r.etablissement,
+        r.date_valeur |> Calendar.strftime("%d/%m/%Y"),
+        r.devise,
+        r.accountnumber,
+        if r.accountnumber in @accounting_number_aux do
+          r.code_comptable_ins
+        else
           ""
         end,
         r.sens,

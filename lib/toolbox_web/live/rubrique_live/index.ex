@@ -5,8 +5,13 @@ defmodule ToolboxWeb.RubriqueLive.Index do
   alias Toolbox.Chrono.Rubrique
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :rubriques, list_rubriques())}
+  def mount(%{"secteur_id" => secteur_id}, _session, socket) do
+    secteur = Chrono.get_secteur!(secteur_id)
+
+    {:ok,
+     socket
+     |> assign(:rubriques, list_rubriques(secteur_id))
+     |> assign(:secteur, secteur)}
   end
 
   @impl true
@@ -37,10 +42,10 @@ defmodule ToolboxWeb.RubriqueLive.Index do
     rubrique = Chrono.get_rubrique!(id)
     {:ok, _} = Chrono.delete_rubrique(rubrique)
 
-    {:noreply, assign(socket, :rubriques, list_rubriques())}
+    {:noreply, assign(socket, :rubriques, list_rubriques(rubrique.secteur_id))}
   end
 
-  defp list_rubriques do
-    Chrono.list_rubriques()
+  defp list_rubriques(secteur_id) do
+    Chrono.list_rubriques(secteur_id)
   end
 end

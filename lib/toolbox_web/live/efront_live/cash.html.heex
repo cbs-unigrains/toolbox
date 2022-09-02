@@ -1,6 +1,6 @@
 <div class="px-4 sm:px-6 lg:px-8">
   <div>
-    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
       <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
         <dt class="text-base font-normal text-gray-900">Nombre de ligne</dt>
 
@@ -19,7 +19,7 @@
             disabled={Enum.count(@toggle_ids) == 0}
             type="submit"
             form="send-to-form"
-            title="Envoyer à la comptablité"
+            title="Envoyer les écritures sélectionnées à la comptablité"
           >
             <.icon name={:upload} />
             <span class="ml-2">compta</span>
@@ -47,6 +47,19 @@
             <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "USD", @toggle_ids),
               locale: :fr,
               currency: "USD"
+            ) %>
+          </div>
+        </dd>
+      </div>
+
+
+            <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+        <dt class="text-base font-normal text-gray-900">Cumul ICNEs MAD</dt>
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
+            <%= Toolbox.Cldr.Number.to_string!(cumul_cash(@rows, "MAD", @toggle_ids),
+              locale: :fr,
+              currency: "MAD"
             ) %>
           </div>
         </dd>

@@ -14,13 +14,14 @@
 <% end %>
 
 <ul>
-
   <li>
     <strong>Name:</strong>
     <%= @rubrique.name %>
   </li>
-
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.rubrique_show_path(@socket, :edit, @rubrique), class: "button" %></span> |
-<span><%= live_redirect "Back", to: Routes.rubrique_index_path(@socket, :index) %></span>
+<span>
+  <%= live_patch("Edit", to: Routes.rubrique_show_path(@socket, :edit, @rubrique), class: "button") %>
+</span>
+|
+<span><%= live_redirect("Back", to: Routes.rubrique_index_path(@socket, :index)) %></span>

@@ -4,7 +4,8 @@ defmodule Toolbox.Chrono.Rubrique do
 
   schema "rubriques" do
     field :name, :string
-    field :secteur_id, :id
+
+    belongs_to :secteur, Toolbox.Chrono.Secteur
 
     timestamps()
   end

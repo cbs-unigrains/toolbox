@@ -29,49 +29,52 @@
     <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
         <div>
-          <ul
-            role="list"
-            class="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
-          >
-            <li class="col-span-1 flex rounded-md shadow-sm">
-              <%= live_patch("Nouveau Secteur",
-                to: Routes.secteur_index_path(@socket, :new),
-                class:
-                  "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 w-full"
-              ) %>
-            </li>
-
+          <%= live_patch("Nouveau Secteur",
+            to: Routes.secteur_index_path(@socket, :new),
+            class:
+              "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+          ) %>
+          <ul role="list" class="divide-y divide-gray-200">
             <%= for secteur <- @secteurs do %>
-              <li class="col-span-1 flex rounded-md shadow-sm">
-                <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">
-                  GA
-                </div>
-                <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-t border-r border-b border-gray-200 bg-white">
-                  <div class="flex-1 truncate px-4 py-2 text-sm">
-                    <a href="#" class="font-medium text-gray-900 hover:text-gray-600">
-                      <%= secteur.name %>
-                    </a>
-                    <p class="text-gray-500">16 Members</p>
-                  </div>
-                  <div class="flex-shrink-0 pr-2">
-                    <button
-                      type="button"
-                      class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white bg-transparent text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                      <span class="sr-only">Open options</span>
-                      <!-- Heroicon name: mini/ellipsis-vertical -->
+              <li>
+                <%= live_redirect(to: Routes.rubrique_index_path(@socket, :index, secteur), class: "block hover:bg-gray-50") do %>
+                  <div class="flex items-center px-4 py-4 sm:px-6">
+                    <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                      <div class="truncate">
+                        <div class="flex text-sm">
+                          <p class="truncate font-medium text-indigo-600"><%= secteur.name %></p>
+                        </div>
+                        <div class="mt-2 flex">
+                          <div class="flex items-center text-sm text-gray-500">
+                            <.icon
+                              name={:collection}
+                              class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            />
+                            <p>
+                              <%= Enum.count(secteur.rubriques) %> Rubriques
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ml-5 flex-shrink-0">
+                      <!-- Heroicon name: mini/chevron-right -->
                       <svg
-                        class="h-5 w-5"
+                        class="h-5 w-5 text-gray-400"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                         aria-hidden="true"
                       >
-                        <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                        <path
+                          fill-rule="evenodd"
+                          d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                          clip-rule="evenodd"
+                        />
                       </svg>
-                    </button>
+                    </div>
                   </div>
-                </div>
+                <% end %>
               </li>
             <% end %>
           </ul>
@@ -80,37 +83,3 @@
     </div>
   </div>
 </div>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="secteurs">
-    <%= for secteur <- @secteurs do %>
-      <tr id={"secteur-#{secteur.id}"}>
-        <td></td>
-
-        <td>
-          <span>
-            <%= live_redirect("Show", to: Routes.secteur_show_path(@socket, :show, secteur)) %>
-          </span>
-          <span>
-            <%= live_patch("Edit", to: Routes.secteur_index_path(@socket, :edit, secteur)) %>
-          </span>
-          <span>
-            <%= link("Delete",
-              to: "#",
-              phx_click: "delete",
-              phx_value_id: secteur.id,
-              data: [confirm: "Are you sure?"]
-            ) %>
-          </span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>

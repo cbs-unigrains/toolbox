@@ -44,12 +44,11 @@ defmodule ToolboxWeb.Router do
       live "/secteurs/:id", SecteurLive.Show, :show
       live "/secteurs/:id/show/edit", SecteurLive.Show, :edit
 
-      live "/rubriques", RubriqueLive.Index, :index
+      live "/rubriques/:secteur_id", RubriqueLive.Index, :index
       live "/rubriques/new", RubriqueLive.Index, :new
       live "/rubriques/:id/edit", RubriqueLive.Index, :edit
       live "/rubriques/:id", RubriqueLive.Show, :show
       live "/rubriques/:id/show/edit", RubriqueLive.Show, :edit
-
 
       # eFront
       live "/eFront/accruals", EfrontLive.Accruals, :index
