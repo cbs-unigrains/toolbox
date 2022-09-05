@@ -47,30 +47,38 @@ defmodule Toolbox.Efront do
   def list_accruals do
     {:ok, %{columns: columns, rows: rows, num_rows: num_rows}} = Repo.query(@accruals_query)
 
-    columns_atomed = for col <- columns, do: String.to_atom(col)
-    lines = for row <- rows, do: Map.new(Enum.zip(columns_atomed, row))
+    if num_rows > 0 do
+      columns_atomed = for col <- columns, do: String.to_atom(col)
+      lines = for row <- rows, do: Map.new(Enum.zip(columns_atomed, row))
 
-    first_transaction_id = List.first(lines).transaction_id
+      first_transaction_id = List.first(lines).transaction_id
 
-    lines_with_index =
-      lines
-      |> Enum.map_reduce({first_transaction_id, 0}, fn x, acc ->
-        idx =
-          if x.transaction_id == elem(acc, 0) do
-            elem(acc, 1)
-          else
-            elem(acc, 1) + 1
-          end
+      lines_with_index =
+        lines
+        |> Enum.map_reduce({first_transaction_id, 0}, fn x, acc ->
+          idx =
+            if x.transaction_id == elem(acc, 0) do
+              elem(acc, 1)
+            else
+              elem(acc, 1) + 1
+            end
 
-        {{idx, x}, {x.transaction_id, idx}}
-      end)
-      |> elem(0)
+          {{idx, x}, {x.transaction_id, idx}}
+        end)
+        |> elem(0)
 
-    %{
-      num_rows: num_rows,
-      rows: lines,
-      rows_with_index: lines_with_index
-    }
+      %{
+        num_rows: num_rows,
+        rows: lines,
+        rows_with_index: lines_with_index
+      }
+    else
+      %{
+        num_rows: 0,
+        rows: [],
+        rows_with_index: []
+      }
+    end
   end
 
   @doc """
@@ -111,30 +119,38 @@ defmodule Toolbox.Efront do
   def list_cash do
     {:ok, %{columns: columns, rows: rows, num_rows: num_rows}} = Repo.query(@cash_query)
 
-    columns_atomed = for col <- columns, do: String.to_atom(col)
-    lines = for row <- rows, do: Map.new(Enum.zip(columns_atomed, row))
+    if num_rows > 0 do
+      columns_atomed = for col <- columns, do: String.to_atom(col)
+      lines = for row <- rows, do: Map.new(Enum.zip(columns_atomed, row))
 
-    first_transaction_id = List.first(lines).transaction_id
+      first_transaction_id = List.first(lines).transaction_id
 
-    lines_with_index =
-      lines
-      |> Enum.map_reduce({first_transaction_id, 0}, fn x, acc ->
-        idx =
-          if x.transaction_id == elem(acc, 0) do
-            elem(acc, 1)
-          else
-            elem(acc, 1) + 1
-          end
+      lines_with_index =
+        lines
+        |> Enum.map_reduce({first_transaction_id, 0}, fn x, acc ->
+          idx =
+            if x.transaction_id == elem(acc, 0) do
+              elem(acc, 1)
+            else
+              elem(acc, 1) + 1
+            end
 
-        {{idx, x}, {x.transaction_id, idx}}
-      end)
-      |> elem(0)
+          {{idx, x}, {x.transaction_id, idx}}
+        end)
+        |> elem(0)
 
-    %{
-      num_rows: num_rows,
-      rows: lines,
-      rows_with_index: lines_with_index
-    }
+      %{
+        num_rows: num_rows,
+        rows: lines,
+        rows_with_index: lines_with_index
+      }
+    else
+      %{
+        num_rows: 0,
+        rows: [],
+        rows_with_index: []
+      }
+    end
   end
 
   @doc """
