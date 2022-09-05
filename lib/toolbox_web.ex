@@ -96,6 +96,9 @@ defmodule ToolboxWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      # Import Bodyguard authz
+      import Bodyguard
+
       import ToolboxWeb.ErrorHelpers
       import ToolboxWeb.Gettext
       alias ToolboxWeb.Router.Helpers, as: Routes

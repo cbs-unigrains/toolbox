@@ -6,6 +6,8 @@ defmodule Toolbox.Efront do
   import Ecto.Query, warn: false
   alias Toolbox.EfrontRepo, as: Repo
 
+  defdelegate authorize(action, user, params), to: Toolbox.Efront.Policy
+
   NimbleCSV.define(MyParser, separator: ";", escape: "\"")
 
   @doc """
