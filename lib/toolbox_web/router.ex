@@ -21,7 +21,7 @@ defmodule ToolboxWeb.Router do
     scope "/", ToolboxWeb do
       pipe_through [:browser, :require_authenticated_user]
 
-      live "/", UnitLive.Index, :index
+      live "/", EfrontLive.Cash, :index
 
       # unit
       live "/unit", UnitLive.Index, :index

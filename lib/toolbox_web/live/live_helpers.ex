@@ -191,7 +191,7 @@ defmodule ToolboxWeb.LiveHelpers do
       <div>
         <button
           type="button"
-          class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+          class="bg-gray-800 flex items-end text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
           phx-click={show_dropdown("##{@id}")}
           phx-click-away={hide_dropdown("##{@id}")}
         >
