@@ -4,7 +4,7 @@
   <div class="relative z-20">
     <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-5 sm:px-6 sm:py-4 lg:px-8 md:justify-start md:space-x-10">
       <div>
-        <a href="#" class="flex">
+        <a href="/" class="flex">
           <span class="sr-only">Workflow</span>
           <img
             class="h-12 w-auto sm:h-14 -mb-4"
@@ -14,7 +14,7 @@
         </a>
       </div>
 
-      <div class="hidden md:flex-1 md:flex md:items-center md:justify-between">
+      <div class="flex-1 flex items-center justify-between">
         <nav class="flex space-x-4">
           <%= if Bodyguard.permit?(Toolbox.Efront, :chrono, @current_user) do %>
           <.flyout_menu label="Chrono" active={@active_tab == "Chrono"}>
@@ -116,7 +116,7 @@
               <!-- Active: "bg-gray-100", Not Active: "" -->
               <a
                 href="#"
-                class="block px-4 py-2 text-sm text-gray-700"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-0"
@@ -125,7 +125,7 @@
               </a>
               <a
                 href="#"
-                class="block px-4 py-2 text-sm text-gray-700"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-1"
@@ -134,7 +134,7 @@
               </a>
               <a
                 href="#"
-                class="block px-4 py-2 text-sm text-gray-700"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 role="menuitem"
                 tabindex="-1"
                 id="user-menu-item-2"
