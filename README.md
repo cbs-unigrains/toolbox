@@ -22,6 +22,19 @@ $env:HEX_UNSAFE_HTTPS = 1
 mix deps.get 
 
 
+# Creation de la Release
+$env:MIX_ENV = "prod"
+$env:HEX_UNSAFE_HTTPS = 1
+mix deps.get --only prod
+mix compile
+mix assets.deploy
+mix release
+
+# Lancer l'application
+_build/prod/rel/toolbox/bin/server
+
+
+
 See https://hexdocs.pm/mix/Mix.Tasks.Release.html for more information about Elixir releases.
 
 Here are some useful release commands you can run in any release environment:
@@ -32,6 +45,12 @@ Here are some useful release commands you can run in any release environment:
 Release created at _build/prod/rel/toolbox!
 
     # To start your system
+    # Need to create env vars, for powershell : 
+    #    $env:EFRONT_DATABASE_URL = "ecto://agenttalend:Bvn862%2F1@srv-sgbd-02/efront"
+    #    $env:CHRONO_DATABASE_URL = "ecto://cbs:Kdi765lc76tG@srv-sgbd/Chrono"
+    #    $env:SECRET_KEY_BASE = "J93PNtt0Xoao8FMRfL0FJfjkYQ6KrkG7yBPys+0x8/EntB5XY9VVreE/DUhUrpFZ"
+    
+    
     _build/prod/rel/toolbox/bin/toolbox start
 
 Once the release is running:

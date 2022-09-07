@@ -17,38 +17,38 @@
       <div class="flex-1 flex items-center justify-between">
         <nav class="flex space-x-4">
           <%= if Bodyguard.permit?(Toolbox.Efront, :chrono, @current_user) do %>
-          <.flyout_menu label="Chrono" active={@active_tab == "Chrono"}>
-            <.flyout_menu_element
-              patch={Routes.secteur_index_path(@conn, :index)}
-              icon={:database}
-              title="Données"
-              subtitle="Liste des différentes données d'une série."
-              link_label="Gérer les données chiffrées"
-            />
-            <.flyout_menu_element
-              patch={Routes.secteur_index_path(@conn, :index)}
-              icon={:view_grid_add}
-              title="Série"
-              subtitle="Permet de gérer les secteur, rubrique et détail de classification des séries."
-              link_label="Gérer la classification des séries"
-            />
-            <.flyout_menu_element
-              patch={Routes.unit_index_path(@conn, :index)}
-              icon={:currency_euro}
-              title="Unité"
-              subtitle="Permet de gérer les unités utilisées par les mesures."
-              link_label="Gérer les unités"
-            />
-            <:footer>
-              <a
-                href="#"
-                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
-              >
-                <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
-                <span class="ml-3">Documentation</span>
-              </a>
-            </:footer>
-          </.flyout_menu>
+            <.flyout_menu label="Chrono" active={@active_tab == "Chrono"}>
+              <.flyout_menu_element
+                patch={Routes.secteur_index_path(@conn, :index)}
+                icon={:database}
+                title="Données"
+                subtitle="Liste des différentes données d'une série."
+                link_label="Gérer les données chiffrées"
+              />
+              <.flyout_menu_element
+                patch={Routes.secteur_index_path(@conn, :index)}
+                icon={:view_grid_add}
+                title="Série"
+                subtitle="Permet de gérer les secteur, rubrique et détail de classification des séries."
+                link_label="Gérer la classification des séries"
+              />
+              <.flyout_menu_element
+                patch={Routes.unit_index_path(@conn, :index)}
+                icon={:currency_euro}
+                title="Unité"
+                subtitle="Permet de gérer les unités utilisées par les mesures."
+                link_label="Gérer les unités"
+              />
+              <:footer>
+                <a
+                  href="#"
+                  class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
+                >
+                  <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
+                  <span class="ml-3">Documentation</span>
+                </a>
+              </:footer>
+            </.flyout_menu>
           <% end %>
 
           <.flyout_menu label="eFront" active={@active_tab == "eFront"}>
@@ -78,25 +78,24 @@
           </.flyout_menu>
 
           <%= if Bodyguard.permit?(Toolbox.Efront, :chrono, @current_user) do %>
-          <.flyout_menu label="Docuware" active={@active_tab == "docuware"}>
-            <.flyout_menu_element
-              patch={Routes.docuware_rss_path(@conn, :index)}
-              icon={:rss}
-              title="RSS"
-              subtitle="Liste des flux RSS docuware permettant de suivre les derniers documents stockés."
-              link_label="Liste les flux RSS"
-            />
-            <:footer>
-              <a
-                href="#"
-                class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
-              >
-                <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
-                <span class="ml-3">Documentation</span>
-              </a>
-            </:footer>
-          </.flyout_menu>
-
+            <.flyout_menu label="Docuware" active={@active_tab == "docuware"}>
+              <.flyout_menu_element
+                patch={Routes.docuware_rss_path(@conn, :index)}
+                icon={:rss}
+                title="RSS"
+                subtitle="Liste des flux RSS docuware permettant de suivre les derniers documents stockés."
+                link_label="Liste les flux RSS"
+              />
+              <:footer>
+                <a
+                  href="#"
+                  class="-m-3 p-3 flex items-center rounded-md text-base font-medium text-gray-900 hover:bg-gray-100"
+                >
+                  <.icon name={:play} outlined class="flex-shrink-0 h-6 w-6 text-gray-400" />
+                  <span class="ml-3">Documentation</span>
+                </a>
+              </:footer>
+            </.flyout_menu>
           <% end %>
         </nav>
         <div class="flex items-center md:ml-12">
@@ -111,8 +110,6 @@
                 />
                 <Heroicons.Solid.chevron_down class="w-4 h-4 text-gray-400 bottom-0 right-0 " />
               </:trigger>
-              
-
               <!-- Active: "bg-gray-100", Not Active: "" -->
               <a
                 href="#"

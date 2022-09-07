@@ -21,18 +21,31 @@ if System.get_env("PHX_SERVER") do
 end
 
 if config_env() == :prod do
-  database_url =
-    System.get_env("DATABASE_URL") ||
+  efront_database_url =
+    System.get_env("EFRONT_DATABASE_URL") ||
       raise """
-      environment variable DATABASE_URL is missing.
+      environment variable EFRONT_DATABASE_URL is missing.
+      For example: ecto://USER:PASS@HOST/DATABASE
+      """
+
+  chrono_database_url =
+    System.get_env("CHRONO_DATABASE_URL") ||
+      raise """
+      environment variable CHRONO_DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
 
+  config :toolbox, Toolbox.EfrontRepo,
+    # ssl: true,
+    url: efront_database_url,
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6
+
   config :toolbox, Toolbox.Repo,
     # ssl: true,
-    url: database_url,
+    url: chrono_database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     socket_options: maybe_ipv6
 
@@ -48,7 +61,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "localhost"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :toolbox, ToolboxWeb.Endpoint,
@@ -80,4 +93,11 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  # Configuration de l'authentification AzureAd
+
+  config :ueberauth, Ueberauth.Strategy.Microsoft.OAuth,
+    tenant_id: "1839f17e-240c-44a4-8d24-b717d8b4bcdf",
+    client_id: "3dc47379-90de-48d4-9853-0780c0a6a314",
+    client_secret: "djUycT7K_2_Yb4.9yIM62T5-k5g9_r-O_t"
 end
