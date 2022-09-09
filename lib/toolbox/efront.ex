@@ -214,7 +214,9 @@ defmodule Toolbox.Efront do
         where: e.glentry in ^entries,
         order_by: [e.transaction_id, e.sens]
 
-    file = File.stream!(Path.join(@file_path, "cash.csv"))
+    timestamp = DateTime.utc_now() |> Calendar.strftime("%Y%m%d_%H%m%S")
+
+    file = File.stream!(Path.join(@file_path, "#{timestamp} cash.csv"))
     rows = Repo.all(query)
 
     rows
@@ -254,7 +256,9 @@ defmodule Toolbox.Efront do
         where: e.glentry in ^entries,
         order_by: [e.transaction_id, e.sens]
 
-    file = File.stream!(Path.join(@file_path, "accruals.csv"))
+    timestamp = DateTime.utc_now() |> Calendar.strftime("%Y%m%d_%H%m%S")
+
+    file = File.stream!(Path.join(@file_path, "#{timestamp} accruals.csv"))
     rows = Repo.all(query)
 
     rows

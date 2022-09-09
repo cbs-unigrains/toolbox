@@ -25,8 +25,6 @@ defmodule Toolbox.OauthController do
   def callback(%{assigns: %{ueberauth_auth: %{info: user_info}}} = conn, %{
         "provider" => "microsoft"
       }) do
-    IO.inspect(conn)
-
     user_params = %{
       email: user_info.email,
       password: random_password(),

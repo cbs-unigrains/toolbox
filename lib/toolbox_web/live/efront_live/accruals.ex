@@ -75,8 +75,6 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
 
   @impl true
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
-    IO.inspect(glentries)
-
     Efront.export_accruals(glentries)
 
     {:noreply, socket |> assign(:toggle_ids, [])}
