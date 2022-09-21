@@ -10,7 +10,7 @@ config :toolbox, Toolbox.EfrontRepo,
   username: System.get_env("EFRONT_REPO_USERNAME"),
   password: System.get_env("EFRONT_REPO_PASSWORD"),
   hostname: "srv-sgbd-02",
-  database: "efront",
+  database: "efront_dfa",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
