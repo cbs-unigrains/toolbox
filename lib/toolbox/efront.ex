@@ -209,6 +209,17 @@ defmodule Toolbox.Efront do
 
   @file_path "C:/tmp/export_toolbox"
   def export_cash(entries) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.run(:export, fn _repo, changes ->
+      do_export_cash(changes, entries)
+    end)
+    |> Ecto.Multi.run(:lock, fn _repo, changes ->
+      do_lock_cash(changes, entries)
+    end)
+    |> Repo.transaction()
+  end
+
+  def do_export_cash(_changes, entries) do
     query =
       from e in Toolbox.Efront.ExportCash,
         where: e.glentry in ^entries,
@@ -219,35 +230,60 @@ defmodule Toolbox.Efront do
     file = File.stream!(Path.join(@file_path, "#{timestamp} cash.csv"))
     rows = Repo.all(query)
 
-    rows
-    |> Enum.map(fn r ->
-      [
-        r.transaction_id,
-        r.code_coda,
-        r.etablissement,
-        r.date |> Calendar.strftime("%d/%m/%Y"),
-        r.devise,
-        r.accountnumber,
-        if r.accountnumber in @accounting_number_aux do
-          r.code_comptable_ins
-        else
-          ""
-        end,
-        r.sens,
-        r.amount |> :erlang.float_to_binary(decimals: 2),
-        r.label,
-        r.el3,
-        r.el4,
-        if r.accountnumber in @accounting_number_aux do
-          r.analytic
-        else
-          ""
-        end
-      ]
-    end)
-    |> MyParser.dump_to_stream()
-    |> Stream.into(file)
-    |> Stream.run()
+    :ok =
+      rows
+      |> Enum.map(fn r ->
+        [
+          r.transaction_id,
+          r.code_coda,
+          r.etablissement,
+          r.date |> Calendar.strftime("%d/%m/%Y"),
+          r.devise,
+          r.accountnumber,
+          if r.accountnumber in @accounting_number_aux do
+            r.code_comptable_ins
+          else
+            ""
+          end,
+          r.sens,
+          r.amount |> :erlang.float_to_binary(decimals: 2),
+          r.label,
+          r.el3,
+          r.el4,
+          if r.accountnumber in @accounting_number_aux do
+            r.analytic
+          else
+            ""
+          end
+        ]
+      end)
+      |> MyParser.dump_to_stream()
+      |> Stream.into(file)
+      |> Stream.run()
+
+    {:ok, nil}
+  end
+
+  @doc """
+  update VCINVESTMENTOP set EXPORTNUMBER=-1 where IQID in (
+      select DISTINCT KEYID3
+      from GLENTRY
+      where IQID in @entries
+  );
+  update GLENTRY set USERTEXT2=-1 where IQID in @entries
+
+  glentry-A7914E7D44B04AFF9820E93E6CBB4C59
+  glentry-4BF7F19439D34A3582B662FB53272935
+  """
+  def do_lock_cash(_changes, entries) do
+    nb_entries = Enum.count(entries)
+
+    query = from(gl in Toolbox.Efront.Glentry, where: gl.iqid in ^entries)
+
+    case Toolbox.EfrontRepo.update_all(query, set: [locked: "-1"]) do
+      {^nb_entries, nil} -> {:ok, nil}
+      _ -> {:error, "Some glentry were not locked"}
+    end
   end
 
   def export_accruals(entries) do

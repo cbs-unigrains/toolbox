@@ -7,14 +7,7 @@ defmodule ToolboxWeb.EfrontLive.Cash do
 
   @impl true
   def mount(_params, _session, socket) do
-    gl_entries = list_accounting()
-
-    {:ok,
-     socket
-     |> assign(:toggle_ids, [])
-     |> assign(:rows_with_index, gl_entries.rows_with_index)
-     |> assign(:rows, gl_entries.rows)
-     |> assign(:num_rows, gl_entries.num_rows)}
+    do_mount(socket)
   end
 
   @impl true
@@ -56,9 +49,13 @@ defmodule ToolboxWeb.EfrontLive.Cash do
 
   @impl true
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
-    Efront.export_cash(glentries)
+    case Efront.export_cash(glentries) do
+      {:ok, %{transfer: transfer}} ->
+        do_mount(socket)
 
-    {:noreply, socket |> assign(:toggle_ids, [])}
+      {:error, _name, _value, _changes_so_far} ->
+        {:noreply, socket |> assign(:toggle_ids, [])}
+    end
   end
 
   defp apply_action(socket, :index, _params) do
@@ -82,5 +79,16 @@ defmodule ToolboxWeb.EfrontLive.Cash do
     else
       ""
     end
+  end
+
+  defp do_mount(socket) do
+    gl_entries = list_accounting()
+
+    {:ok,
+     socket
+     |> assign(:toggle_ids, [])
+     |> assign(:rows_with_index, gl_entries.rows_with_index)
+     |> assign(:rows, gl_entries.rows)
+     |> assign(:num_rows, gl_entries.num_rows)}
   end
 end
