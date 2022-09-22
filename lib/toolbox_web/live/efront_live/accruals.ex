@@ -7,14 +7,7 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
 
   @impl true
   def mount(_params, _session, socket) do
-    gl_entries = list_accounting()
-
-    {:ok,
-     socket
-     |> assign(:toggle_ids, [])
-     |> assign(:rows, gl_entries.rows)
-     |> assign(:rows_with_index, gl_entries.rows_with_index)
-     |> assign(:num_rows, gl_entries.num_rows)}
+    do_mount(socket)
   end
 
   @impl true
@@ -25,10 +18,6 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Accruals")
-  end
-
-  defp list_accounting do
-    Efront.list_accruals()
   end
 
   def cumul_accruals(nil, _currency, _toggle_ids), do: 0
@@ -75,9 +64,15 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
 
   @impl true
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
-    Efront.export_accruals(glentries)
+    case Efront.export_accruals(glentries) do
+      {:ok, %{transfer: transfer}} ->
+        do_mount(socket)
 
-    {:noreply, socket |> assign(:toggle_ids, [])}
+      {:error, _name, _value, _changes_so_far} ->
+        {:noreply, socket |> assign(:toggle_ids, [])}
+    end
+
+
   end
 
   def stripped_row_class(idx) do
@@ -86,5 +81,17 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
     else
       ""
     end
+  end
+
+
+  def do_mount(socket) do
+    gl_entries = Efront.list_accruals()
+
+    {:ok,
+     socket
+     |> assign(:toggle_ids, [])
+     |> assign(:rows, gl_entries.rows)
+     |> assign(:rows_with_index, gl_entries.rows_with_index)
+     |> assign(:num_rows, gl_entries.num_rows)}
   end
 end

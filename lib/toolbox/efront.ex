@@ -213,8 +213,11 @@ defmodule Toolbox.Efront do
     |> Ecto.Multi.run(:export, fn _repo, changes ->
       do_export_cash(changes, entries)
     end)
-    |> Ecto.Multi.run(:lock, fn _repo, changes ->
-      do_lock_cash(changes, entries)
+    |> Ecto.Multi.run(:lock_glentries, fn _repo, changes ->
+      do_lock_glentries(changes, entries)
+    end)
+    |> Ecto.Multi.run(:lock_operation, fn _repo, changes ->
+      do_lock_operation(changes, entries)
     end)
     |> Repo.transaction()
   end
@@ -264,29 +267,21 @@ defmodule Toolbox.Efront do
     {:ok, nil}
   end
 
-  @doc """
-  update VCINVESTMENTOP set EXPORTNUMBER=-1 where IQID in (
-      select DISTINCT KEYID3
-      from GLENTRY
-      where IQID in @entries
-  );
-  update GLENTRY set USERTEXT2=-1 where IQID in @entries
-
-  glentry-A7914E7D44B04AFF9820E93E6CBB4C59
-  glentry-4BF7F19439D34A3582B662FB53272935
-  """
-  def do_lock_cash(_changes, entries) do
-    nb_entries = Enum.count(entries)
-
-    query = from(gl in Toolbox.Efront.Glentry, where: gl.iqid in ^entries)
-
-    case Toolbox.EfrontRepo.update_all(query, set: [locked: "-1"]) do
-      {^nb_entries, nil} -> {:ok, nil}
-      _ -> {:error, "Some glentry were not locked"}
-    end
+  def export_accruals(entries) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.run(:export, fn _repo, changes ->
+      do_export_accruals(changes, entries)
+    end)
+    |> Ecto.Multi.run(:lock_glentries, fn _repo, changes ->
+      do_lock_glentries(changes, entries)
+    end)
+    |> Ecto.Multi.run(:lock_operation, fn _repo, changes ->
+      do_lock_operation(changes, entries)
+    end)
+    |> Repo.transaction()
   end
 
-  def export_accruals(entries) do
+  def do_export_accruals(_changes, entries) do
     query =
       from e in Toolbox.Efront.ExportAccruals,
         where: e.glentry in ^entries,
@@ -297,7 +292,7 @@ defmodule Toolbox.Efront do
     file = File.stream!(Path.join(@file_path, "#{timestamp} accruals.csv"))
     rows = Repo.all(query)
 
-    rows
+  :ok =   rows
     |> Enum.map(fn r ->
       [
         r.transaction_id,
@@ -326,5 +321,43 @@ defmodule Toolbox.Efront do
     |> MyParser.dump_to_stream()
     |> Stream.into(file)
     |> Stream.run()
+
+    {:ok, nil}
+
+  end
+
+  @doc """
+  update GLENTRY set USERTEXT2=-1 where IQID in @entries
+  """
+  def do_lock_glentries(_changes, entries) do
+    nb_entries = Enum.count(entries)
+
+    query = from(gl in Toolbox.Efront.Glentry, where: gl.iqid in ^entries)
+
+    case Toolbox.EfrontRepo.update_all(query, set: [locked: "-1"]) do
+      {^nb_entries, nil} -> {:ok, nil}
+      _ -> {:error, "Some glentry were not locked"}
+    end
+  end
+
+  @doc """
+  update VCINVESTMENTOP set EXPORTNUMBER=-1 where IQID in (
+      select DISTINCT KEYID3
+      from GLENTRY
+      where IQID in @entries
+  );
+
+  """
+
+  def do_lock_operation(_changes, entries) do
+    entries_ids =
+      from(gl in Toolbox.Efront.Glentry, where: gl.iqid in ^entries, select: gl.operation_id)
+
+    query = from(op in Toolbox.Efront.Vcinvestmentop, where: op.iqid in subquery(entries_ids))
+
+    case Toolbox.EfrontRepo.update_all(query, set: [locked: -1]) do
+      {nb_entries, nil} when is_integer(nb_entries) -> {:ok, nil}
+      _ -> {:error, "Some operation were not locked"}
+    end
   end
 end

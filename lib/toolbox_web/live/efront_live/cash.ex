@@ -63,10 +63,6 @@ defmodule ToolboxWeb.EfrontLive.Cash do
     |> assign(:page_title, "Listing Cash")
   end
 
-  defp list_accounting do
-    Efront.list_cash()
-  end
-
   def cumul_cash(flows, currency, selected) do
     flows
     |> Enum.filter(fn f -> f.amount > 0 && f.currency == currency && f.glentry_id in selected end)
@@ -82,7 +78,7 @@ defmodule ToolboxWeb.EfrontLive.Cash do
   end
 
   defp do_mount(socket) do
-    gl_entries = list_accounting()
+    gl_entries =  Efront.list_cash()
 
     {:ok,
      socket
