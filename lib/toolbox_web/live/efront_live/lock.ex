@@ -1,4 +1,4 @@
-defmodule ToolboxWeb.EfrontLive.Cash do
+defmodule ToolboxWeb.EfrontLive.Lock do
   use ToolboxWeb, :live_view
 
   alias Toolbox.Efront
@@ -48,9 +48,9 @@ defmodule ToolboxWeb.EfrontLive.Cash do
   end
 
   @impl true
-  def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
-    case Efront.lock(glentries) do
-      {:ok, %{transfer: transfer}} ->
+  def handle_event("lock", %{"glentry_to_send" => glentries}, socket) do
+    case Efront.export_cash(glentries) do
+      {:ok, %{transfer: _transfer}} ->
         do_mount(socket)
 
       {:error, _name, _value, _changes_so_far} ->
@@ -60,13 +60,7 @@ defmodule ToolboxWeb.EfrontLive.Cash do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Cash")
-  end
-
-  def cumul_cash(flows, currency, selected) do
-    flows
-    |> Enum.filter(fn f -> f.amount > 0 && f.currency == currency && f.glentry_id in selected end)
-    |> Enum.reduce(0, fn f, acc -> f.amount + acc end)
+    |> assign(:page_title, "Lock")
   end
 
   def stripped_row_class(idx) do

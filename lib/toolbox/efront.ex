@@ -323,6 +323,19 @@ defmodule Toolbox.Efront do
 
   end
 
+
+
+  def lock(entries) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.run(:lock_glentries, fn _repo, changes ->
+      do_lock_glentries(changes, entries)
+    end)
+    |> Ecto.Multi.run(:lock_operation, fn _repo, changes ->
+      do_lock_operation(changes, entries)
+    end)
+    |> Repo.transaction()
+  end
+
   @doc """
   update GLENTRY set USERTEXT2=-1 where IQID in @entries
   """

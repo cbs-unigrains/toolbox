@@ -1,0 +1,13 @@
+POST http://srv-dw/docuware/platform/Account/TrustedLogOn HTTP/1.1
+content-type: application/x-www-form-urlencoded
+Accept: application/json
+
+{
+    "ImpersonateName": "BERNARDES",
+    "LicenseType": "PlatformService",
+    "Password": "lIqc964vHu7cIbA6ZLBZ",
+    "RedirectToMyselfInCaseOfError": "false",
+    "RememberMe": "false",
+    "UserName": "Fonds Doc",
+    "Organization": "b29135be-1cae-4115-ac51-1b8eb5f3bad9"
+}

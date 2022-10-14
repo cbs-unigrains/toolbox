@@ -53,6 +53,7 @@ defmodule ToolboxWeb.Router do
       # eFront
       live "/eFront/accruals", EfrontLive.Accruals, :index
       live "/eFront/cash", EfrontLive.Cash, :index
+      live "/eFront/lock", EfrontLive.Lock, :index
 
       # docuware
       live "/docuware/rss", DocuwareLive.Rss, :index

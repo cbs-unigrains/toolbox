@@ -1,0 +1,151 @@
+<div class="px-4 sm:px-6 lg:px-8">
+  <div>
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-4">
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+        <dt class="text-base font-normal text-gray-900">Nombre de ligne</dt>
+
+        <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
+          <div class="flex items-baseline text-2xl font-semibold text-indigo-600">
+            <%= Enum.count(@toggle_ids) %>
+            <span class="ml-2 text-sm font-medium text-gray-500">
+              / <%= @num_rows %>
+            </span>
+          </div>
+
+          <button
+            class={
+              "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto  disabled:opacity-75 #{if Enum.count(@toggle_ids) > 0, do: "hover:bg-indigo-700", else: "cursor-not-allowed"}"
+            }
+            disabled={Enum.count(@toggle_ids) == 0}
+            type="submit"
+            form="lock-form"
+            title="Envoyer les écritures sélectionnées à la comptablité"
+          >
+            <.icon name={:lock_closed} />
+            <span class="ml-2">Lock</span>
+          </button>
+        </dd>
+      </div>
+
+    </dl>
+  </div>
+
+  <div class="mt-8 flex flex-col">
+    <div class="-my-2 -mx-4 sm:-mx-6 lg:-mx-8  overflow-x-auto">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <.form for={:lock} id="lock" phx-submit="lock">
+          <table class="min-w-full divide-y divide-gray-300 font-mono">
+            <thead>
+              <tr>
+                <th scope="col" class="relative w-12 px-6 sm:w-16 sm:px-8">
+                  <input
+                    type="checkbox"
+                    id="toggle-all"
+                    name="toggle-all"
+                    phx-update="ignore"
+                    phx-click="toggle-all"
+                    class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+                  />
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                >
+                  Fund
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Account
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Instrument
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap px-2 py-3.5 text-left text-sm font-semibold text-gray-900"
+                >
+                  Accounting
+                </th>
+                <th
+                  scope="col"
+                  class="whitespace-nowrap px-2 py-3.5 text-right text-sm font-semibold text-gray-900"
+                >
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <%= for {idx, row} <- @rows_with_index do %>
+                <tr id={"glentry-#{row.glentry_id}"} class={stripped_row_class(idx)}>
+                  <td class={
+                    "relative w-12 px-6 sm:w-16 sm:px-8  #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"}"
+                  }>
+                    <%= if (row.glentry_id in @toggle_ids) do %>
+                      <div class="absolute inset-y-0 left-0 w-0.5 bg-indigo-600"></div>
+                    <% end %>
+                    <input
+                      name="glentry_to_send[]"
+                      value={row.glentry_id}
+                      phx-click="toggle"
+                      phx-value-toggle-id={row.glentry_id}
+                      checked={row.glentry_id in @toggle_ids}
+                      type="checkbox"
+                      class="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 sm:left-6"
+                    />
+                  </td>
+                  <td class={
+                    "whitespace-nowrap py-2 pl-4 pr-3 text-sm   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"} sm:pl-6"
+                  }>
+                    <%= row.fund %>
+                  </td>
+                  <td class={
+                    "whitespace-nowrap px-2 py-2 text-sm font-medium   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"}"
+                  }>
+                    <%= row.account %>
+                  </td>
+                  <td class={
+                    "whitespace-nowrap px-2 py-2 text-sm font-medium   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"}"
+                  }>
+                    <%= row.instrument %>
+                  </td>
+                  <td class={
+                    "whitespace-nowrap px-2 py-2 text-sm font-medium   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"}"
+                  }>
+                    <%= Toolbox.Cldr.Date.to_string!(Date.from_iso8601!(row.date),
+                      format: :short,
+                      locale: "fr"
+                    ) %>
+                  </td>
+                  <td class={
+                    "whitespace-nowrap px-2 py-2 text-sm font-medium   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"} text-right"
+                  }>
+                    <%= row.accounting %>
+                  </td>
+                  <td class={
+                    "whitespace-nowrap px-2 py-2 text-sm font-medium   #{if row.glentry_id in @toggle_ids, do: "text-indigo-600", else: "text-gray-900"} text-right"
+                  }>
+                    <%= Toolbox.Cldr.Number.to_string!(row.amount,
+                      locale: :fr,
+                      currency: row.currency
+                    ) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </.form>
+      </div>
+    </div>
+  </div>
+</div>
