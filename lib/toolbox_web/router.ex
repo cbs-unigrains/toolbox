@@ -32,23 +32,23 @@ defmodule ToolboxWeb.Router do
       live "/unit/:id/show/edit", UnitLive.Show, :edit
 
       # series
-      # live "/series", SerieLive.Series, :index
-      # live "/series/new", SerieLive.Index, :new
-      # live "/series/:id/edit", SerieLive.Index, :edit
-      # live "/series/:id", SerieLive.Show, :show
-      # live "/series/:id/show/edit", SerieLive.Show, :edit
+      live "/series", SerieLive.Series, :index
+      live "/series/new", SerieLive.Index, :new
+      live "/series/:id/edit", SerieLive.Index, :edit
+      live "/series/:id", SerieLive.Show, :show
+      live "/series/:id/show/edit", SerieLive.Show, :edit
 
-      # live "/secteurs", SecteurLive.Index, :index
-      # live "/secteurs/new", SecteurLive.Index, :new
-      # live "/secteurs/:id/edit", SecteurLive.Index, :edit
-      # live "/secteurs/:id", SecteurLive.Show, :show
-      # live "/secteurs/:id/show/edit", SecteurLive.Show, :edit
+      live "/secteurs", SecteurLive.Index, :index
+      live "/secteurs/new", SecteurLive.Index, :new
+      live "/secteurs/:id/edit", SecteurLive.Index, :edit
+      live "/secteurs/:id", SecteurLive.Show, :show
+      live "/secteurs/:id/show/edit", SecteurLive.Show, :edit
 
-      # live "/rubriques/:secteur_id", RubriqueLive.Index, :index
-      # live "/rubriques/new", RubriqueLive.Index, :new
-      # live "/rubriques/:id/edit", RubriqueLive.Index, :edit
-      # live "/rubriques/:id", RubriqueLive.Show, :show
-      # live "/rubriques/:id/show/edit", RubriqueLive.Show, :edit
+      live "/rubriques/:secteur_id", RubriqueLive.Index, :index
+      live "/rubriques/new", RubriqueLive.Index, :new
+      live "/rubriques/:id/edit", RubriqueLive.Index, :edit
+      live "/rubriques/:id", RubriqueLive.Show, :show
+      live "/rubriques/:id/show/edit", RubriqueLive.Show, :edit
 
       # eFront
       live "/eFront/accruals", EfrontLive.Accruals, :index

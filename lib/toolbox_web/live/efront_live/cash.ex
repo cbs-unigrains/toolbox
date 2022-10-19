@@ -78,7 +78,7 @@ defmodule ToolboxWeb.EfrontLive.Cash do
   end
 
   defp do_mount(socket) do
-    gl_entries =  Efront.list_cash()
+    gl_entries = Efront.list_cash()
 
     {:ok,
      socket

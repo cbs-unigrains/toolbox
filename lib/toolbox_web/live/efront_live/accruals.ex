@@ -71,8 +71,6 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
       {:error, _name, _value, _changes_so_far} ->
         {:noreply, socket |> assign(:toggle_ids, [])}
     end
-
-
   end
 
   def stripped_row_class(idx) do
@@ -82,7 +80,6 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
       ""
     end
   end
-
 
   def do_mount(socket) do
     gl_entries = Efront.list_accruals()

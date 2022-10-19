@@ -289,41 +289,39 @@ defmodule Toolbox.Efront do
     file = File.stream!(Path.join(@file_path, "#{timestamp} accruals.csv"))
     rows = Repo.all(query)
 
-  :ok =   rows
-    |> Enum.map(fn r ->
-      [
-        r.transaction_id,
-        r.code_coda,
-        r.etablissement,
-        r.date_valeur |> Calendar.strftime("%d/%m/%Y"),
-        r.devise,
-        r.accountnumber,
-        if r.accountnumber in @accounting_number_aux do
-          r.code_comptable_ins
-        else
-          ""
-        end,
-        r.sens,
-        r.amount |> :erlang.float_to_binary(decimals: 2),
-        r.label,
-        r.el3,
-        r.el4,
-        if r.accountnumber in @accounting_number_analy do
-          r.analytic
-        else
-          ""
-        end
-      ]
-    end)
-    |> MyParser.dump_to_stream()
-    |> Stream.into(file)
-    |> Stream.run()
+    :ok =
+      rows
+      |> Enum.map(fn r ->
+        [
+          r.transaction_id,
+          r.code_coda,
+          r.etablissement,
+          r.date_valeur |> Calendar.strftime("%d/%m/%Y"),
+          r.devise,
+          r.accountnumber,
+          if r.accountnumber in @accounting_number_aux do
+            r.code_comptable_ins
+          else
+            ""
+          end,
+          r.sens,
+          r.amount |> :erlang.float_to_binary(decimals: 2),
+          r.label,
+          r.el3,
+          r.el4,
+          if r.accountnumber in @accounting_number_analy do
+            r.analytic
+          else
+            ""
+          end
+        ]
+      end)
+      |> MyParser.dump_to_stream()
+      |> Stream.into(file)
+      |> Stream.run()
 
     {:ok, nil}
-
   end
-
-
 
   def lock(entries) do
     Ecto.Multi.new()
