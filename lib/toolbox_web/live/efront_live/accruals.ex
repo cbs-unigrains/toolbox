@@ -65,7 +65,7 @@ defmodule ToolboxWeb.EfrontLive.Accruals do
   @impl true
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
     case Efront.export_accruals(glentries) do
-      {:ok, %{transfer: transfer}} ->
+      {:ok, %{transfer: _transfer}} ->
         do_mount(socket)
 
       {:error, _name, _value, _changes_so_far} ->

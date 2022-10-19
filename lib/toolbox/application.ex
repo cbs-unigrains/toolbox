@@ -15,8 +15,10 @@ defmodule Toolbox.Application do
       ToolboxWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Toolbox.PubSub},
+      # Let's encrypt SSL
+
       # Start the Endpoint (http/https)
-      ToolboxWeb.Endpoint
+      {SiteEncrypt.Phoenix, ToolboxWeb.Endpoint}
       # Start a worker by calling: Toolbox.Worker.start_link(arg)
       # {Toolbox.Worker, arg}
     ]

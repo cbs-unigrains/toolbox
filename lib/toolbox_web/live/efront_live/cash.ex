@@ -50,7 +50,7 @@ defmodule ToolboxWeb.EfrontLive.Cash do
   @impl true
   def handle_event("send-to", %{"glentry_to_send" => glentries}, socket) do
     case Efront.lock(glentries) do
-      {:ok, %{transfer: transfer}} ->
+      {:ok, %{transfer: _transfer}} ->
         do_mount(socket)
 
       {:error, _name, _value, _changes_so_far} ->

@@ -58,7 +58,8 @@ defmodule Toolbox.MixProject do
       {:req, "~> 0.3.0"},
       {:nimble_csv, "~> 1.1"},
       {:plug_cowboy, "~> 2.5"},
-      {:bodyguard, "~> 2.4"}
+      {:bodyguard, "~> 2.4"},
+      {:site_encrypt, "~> 0.4"}
     ]
   end
 
