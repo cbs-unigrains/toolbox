@@ -49,6 +49,7 @@ Release created at _build/prod/rel/toolbox!
     #    $env:EFRONT_DATABASE_URL = "ecto://agenttalend:Bvn862%2F1@srv-sgbd-02/efront"
     #    $env:CHRONO_DATABASE_URL = "ecto://cbs:Kdi765lc76tG@srv-sgbd/Chrono"
     #    $env:SECRET_KEY_BASE = "J93PNtt0Xoao8FMRfL0FJfjkYQ6KrkG7yBPys+0x8/EntB5XY9VVreE/DUhUrpFZ"
+    #    $env:LOGGER_OUTPUT_PATH = "c:/tmp/toolbox_logs/toolbox.log"
     
     
     _build/prod/rel/toolbox/bin/toolbox start
