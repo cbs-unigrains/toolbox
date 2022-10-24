@@ -20,7 +20,7 @@ defmodule Toolbox.MixProject do
   def application do
     [
       mod: {Toolbox.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools, :os_mon, :logger_file_backend]
     ]
   end
 
@@ -59,6 +59,7 @@ defmodule Toolbox.MixProject do
       {:nimble_csv, "~> 1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:bodyguard, "~> 2.4"},
+      {:logger_file_backend, "~> 0.0.10"},
       {:site_encrypt, "~> 0.4"}
     ]
   end

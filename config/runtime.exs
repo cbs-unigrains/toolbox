@@ -113,4 +113,19 @@ if config_env() == :prod do
     tenant_id: "1839f17e-240c-44a4-8d24-b717d8b4bcdf",
     client_id: "3dc47379-90de-48d4-9853-0780c0a6a314",
     client_secret: "djUycT7K_2_Yb4.9yIM62T5-k5g9_r-O_t"
+
+  logger_output_path =
+    System.get_env("LOGGER_OUTPUT_PATH") ||
+      raise """
+      environment variable LOGGER_OUTPUT_PATH is missing.
+      Like c:\tmp\toolbox\toolbox.logs
+      """
+
+  config :logger,
+    backends: [:console, {LoggerFileBackend, :error_log}],
+    format: "[$level] $message\n"
+
+  config :logger, :error_log,
+    path: logger_output_path,
+    level: :info
 end
