@@ -49,8 +49,8 @@ defmodule ToolboxWeb.EfrontLive.Lock do
 
   @impl true
   def handle_event("lock", %{"glentry_to_send" => glentries}, socket) do
-    case Efront.export_cash(glentries) do
-      {:ok, %{transfer: _transfer}} ->
+    case Efront.lock(glentries) do
+      {:ok, _} ->
         do_mount(socket)
 
       {:error, _name, _value, _changes_so_far} ->
